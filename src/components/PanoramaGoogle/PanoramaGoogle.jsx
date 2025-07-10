@@ -11,45 +11,43 @@ import api from '../../config/api';
 import eventConfig from '../../config/events.json';
 
 function PanoramaGoogle({ className, getParams, utils, realPos }) {
-    const setZoom = (pano, zoom, incr = false) => pano.setZoom(incr ? pano.getZoom() + zoom : zoom);
+    // Get zoom level from params, default to 15 if not specified
+    const satelliteZoom = getParams.zoom ? parseInt(getParams.zoom) : 15;
 
     return (
         <Wrapper apiKey={api.googleMapsApiKey}>
             <Map
-                type="pano"
-                className={spbw(className, 'pano-no-spoilers')}
+                type="map"
+                className={spbw(className, 'satellite-view')}
                 options={{
-                    pov: {
-                        heading: Math.random() * 360,
-                        pitch: 0
-                    },
-                    showRoadLabels: false,
+                    mapTypeId: 'satellite',
+                    zoom: satelliteZoom,
                     disableDefaultUI: true,
-                    linksControl: true
+                    draggable: false,
+                    scrollwheel: false,
+                    disableDoubleClickZoom: true,
+                    keyboardShortcuts: false,
+                    gestureHandling: 'none'
                 }}
-                onMount={pano => {
-                    const svSvc = new window.google.maps.StreetViewService();
-
+                onMount={map => {
                     function getRandomLocation(n = 1) {
                         if (n <= 0) return;
-                        svSvc.getPanorama({
-                            location: arrToLLObj(genRandomCoords(getParams.region)),
-                            radius: 10000
-                        }).then(({ data }) => {
-                            const loc = data.location;
-                            if (!data.links.length) return getRandomLocation(n);
-                            realPos.current = [loc.latLng.lat(), loc.latLng.lng()];
-                            pano.setPano(loc.pano);
-                            setZoom(pano, 0);
-                            utils.timer.itvId = setInterval(() => utils.timer.nextSec(), 1000);
-                        }).catch((e => e.code === 'ZERO_RESULTS' && getRandomLocation(n - 1)));
+                        const randomCoords = genRandomCoords(getParams.region);
+                        const location = arrToLLObj(randomCoords);
+                        
+                        realPos.current = [randomCoords[0], randomCoords[1]];
+                        map.setCenter(location);
+                        map.setZoom(satelliteZoom);
+                        utils.timer.itvId = setInterval(() => utils.timer.nextSec(), 1000);
                     }
                     getRandomLocation(10);
 
-                    pano.addListener('pov_changed', () => utils.compass.setAngle(360 - pano.getPov().heading));
-                    window.addEventListener(eventConfig.gGoToStart, () => pano.setPosition(arrToLLObj(realPos.current)));
-                    window.addEventListener(eventConfig.gZoomIn, () => setZoom(pano, 0.5, true));
-                    window.addEventListener(eventConfig.gZoomOut, () => setZoom(pano, -0.5, true));
+                    // Keep existing event listeners but remove pov_changed since it's not applicable to satellite view
+                    window.addEventListener(eventConfig.gGoToStart, () => {
+                        map.setCenter(arrToLLObj(realPos.current));
+                        map.setZoom(satelliteZoom);
+                    });
+                    // Remove zoom event listeners since zoom is locked
                 }}
             />
         </Wrapper>

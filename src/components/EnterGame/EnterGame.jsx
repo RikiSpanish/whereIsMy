@@ -22,13 +22,20 @@ function EnterGame({ className }) {
             setPressTimeout(-1);
         }, 2000));
     };
+    
     const prefBtnClick = evt => {
         clearTimeout(pressTimeout);
-        if (pressTimeout + 1) {
+        if (pressTimeout !== -1) {
+            // Was a long press, don't toggle preferences
+            setPressTimeout(-1);
+        } else {
+            // Was a regular click, toggle preferences
             if (prefOpened) {
                 setPrefOpened(false);
                 setExpOpened(false);
-            } else setPrefOpened(true);
+            } else {
+                setPrefOpened(true);
+            }
         }
         evt.preventDefault();
     };
@@ -36,11 +43,34 @@ function EnterGame({ className }) {
     return (
         <div className={spbw(cls.enter_game, className)}>
             <form action="/game" method="get">
-                <Dropdown className={cls.form_item} optionList={Object.entries(gameConfig.regionNames)} name="region" />
+                <Dropdown 
+                    className={cls.form_item} 
+                    optionList={Object.entries(gameConfig.regionNames)} 
+                    name="region" 
+                />
+                
+                <div className={cls.form_item}>
+                    <label>Satellite Zoom Level:</label>
+                    <Dropdown 
+                        className={cls.zoom_dropdown} 
+                        optionList={[
+                            ['20', '0 (Furthest)'],
+                            ['18', '10'],
+                            ['16', '20'],
+                            ['14', '30'],
+                            ['12', '50'],
+                            ['10', '100 (Closest)']
+                        ]} 
+                        name="zoom" 
+                        defaultValue="15"
+                    />
+                </div>
+
                 <fieldset hidden={!expOpened} className={spbw('fieldset', cls.form_item)}>
                     <legend className="fieldset-legend">Experiments</legend>
                     Empty :(
                 </fieldset>
+                
                 <fieldset hidden={!prefOpened} className={spbw('fieldset', cls.form_item)}>
                     <legend className="fieldset-legend">Preferences</legend>
                     <label className="fieldset-item">
@@ -52,16 +82,7 @@ function EnterGame({ className }) {
                         Timer
                     </label>
                 </fieldset>
-                <div className={cls.form_item}>
-                    <Button
-                        className="block"
-                        onPointerDown={prefBtnDown}
-                        onClick={prefBtnClick}
-                        onContextMenu={() => false}
-                    >
-                        Preferences...
-                    </Button>
-                </div>
+                
                 <div className={cls.form_item}>
                     <Button type="submit" className="special block">Start</Button>
                 </div>
@@ -73,8 +94,9 @@ function EnterGame({ className }) {
 EnterGame.propTypes = {
     className: PropTypes.string
 };
+
 EnterGame.defaultProps = {
     className: ''
-}
+};
 
 export default EnterGame;
