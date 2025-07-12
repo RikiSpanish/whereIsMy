@@ -1,11 +1,10 @@
 import PropTypes from 'prop-types';
+import { useState, useEffect } from 'react';
 
 import spbw from '../../utils/spbw';
 import strCut from '../../utils/str-cut';
 import geoUrl from '../../utils/geo-url';
-import readableDistance from '../../utils/readable/readable-distance';
 import readableTime from '../../utils/readable/readable-time';
-import readablePercentage from '../../utils/readable/readable-percentage';
 
 import calcGeoDistance from '../../utils/calc/calc-geo-distance';
 import calcAccuracy from '../../utils/calc/calc-accuracy';
@@ -48,9 +47,49 @@ Floor - Rounding Down
 `;
 
 function GameResults({ className, map, data }) {
+    const [animatedPoints, setAnimatedPoints] = useState(0);
+    const [animatedDistanceKm, setAnimatedDistanceKm] = useState(0);
+    const [showMiles, setShowMiles] = useState(false);
+    
     const cutCoords = a => a.map(el => strCut(el.toString(), 7)).join(',');
-    const dst = calcGeoDistance(data.guessPos, data.realPos)
+    const dst = calcGeoDistance(data.guessPos, data.realPos);
     const acc = calcAccuracy(dst);
+    const points = calcPoints(acc, data.time);
+    
+    const distanceInKm = dst / 1000;
+    const distanceInMiles = distanceInKm * 0.621371;
+    
+    // Calculate display values based on animated km distance
+    const displayDistance = showMiles ? animatedDistanceKm * 0.621371 : animatedDistanceKm;
+    const distanceUnit = showMiles ? 'miles' : 'km';
+    
+    const formatNumber = (num) => {
+        return Math.round(num).toLocaleString();
+    };
+
+    useEffect(() => {
+        const animateValue = (start, end, duration, setter) => {
+            const startTime = Date.now();
+            const animate = () => {
+                const elapsed = Date.now() - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+                const current = start + (end - start) * easeOutQuart;
+                setter(current);
+                
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                }
+            };
+            animate();
+        };
+
+        // Start animations with slight delay - faster duration (1000ms instead of 2000ms)
+        setTimeout(() => {
+            animateValue(0, points, 1000, setAnimatedPoints);
+            animateValue(0, distanceInKm, 1000, setAnimatedDistanceKm);
+        }, 500);
+    }, [points, distanceInKm]); // Only depend on the calculated values, not showMiles
 
     return (
         <div className={spbw(className, cls.results)}>
@@ -59,49 +98,28 @@ function GameResults({ className, map, data }) {
                     <h2 className="title title-center section-title">Results</h2>
                     <div className={cls.map}>{map}</div>
                     <div className={cls.main}>
-                        <div>
-                            <p className={cls.col}>
-                                Region: <span className={cls.val}>{gameConfig.regionNames[data.region]}</span>
-                            </p>
-                        </div>
-                        <div className={cls.row}>
-                            <p className={cls.col}>
-                                Guess position:
-                                <a
-                                    href={geoUrl(data.guessPos)}
-                                    target="_blank"
-                                    rel="noreferrer"
-                                >
-                                    {cutCoords(data.guessPos)}
-                                </a>
-                            </p>
-                            <p className={cls.col}>
-                                Real position:
-                                <a
-                                    href={geoUrl(data.realPos)}
-                                    target="_blank"
-                                    rel="noreferrer"
-                                >
-                                    {cutCoords(data.realPos)}
-                                </a>
-                            </p>
-                        </div>
-                        <div className={cls.row}>
-                            <p className={cls.col}>Distance: <span>{readableDistance(dst)}</span></p>
-                            <p className={cls.col}>Time: <span>{readableTime(data.time)}</span></p>
-                        </div>
-                        <div className={cls.row}>
-                            <p className={cls.col}>Guess accuracy: <span>{readablePercentage(acc)}</span></p>
-                            <p className={cls.col}>Points: <span>{calcPoints(acc, data.time)}</span></p>
-                        </div>
-                        <div className={cls.row}>
-                            <p className={cls.col}>
-                                {/* eslint-disable-next-line */}
-                                <a className={cls.show_formulas} href="#" onClick={(e) => {
-                                    alert(formulas);
-                                    e.preventDefault();
-                                }}>Show accuracy & points formulas</a>
-                            </p>
+                        <div className={cls.resultsTable}>
+                            <div className={cls.tableRow}>
+                                <div className={cls.tableLabel}>Points</div>
+                                <div className={cls.tableValue}>{formatNumber(animatedPoints)}</div>
+                            </div>
+                            <div className={cls.tableRow}>
+                                <div className={cls.tableLabel}>Distance</div>
+                                <div className={cls.tableValue}>
+                                    {formatNumber(displayDistance)} {distanceUnit}
+                                </div>
+                            </div>
+                            <div className={cls.tableRow}>
+                                <div className={cls.tableLabel}></div>
+                                <div className={cls.tableValue}>
+                                    <button 
+                                        className={cls.unitToggle}
+                                        onClick={() => setShowMiles(!showMiles)}
+                                    >
+                                        Switch to {showMiles ? 'kilometers' : 'miles'}
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <p className={cls.home_link}>

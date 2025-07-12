@@ -14,6 +14,53 @@
     font-size: 40px;
 }
 
+.resultsTable {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.tableRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 2px solid rgba(255,255,255,0.1);
+}
+
+.tableRow:last-child {
+    border-bottom: none;
+}
+
+.tableLabel {
+    font-weight: bold;
+    color: rgba(255,255,255,0.8);
+}
+
+.tableValue {
+    font-family: monospace;
+    font-weight: bold;
+    color: #fff;
+    text-align: right;
+}
+
+.unitToggle {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.3);
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.6em;
+    transition: background-color 0.3s ease;
+}
+
+.unitToggle:hover {
+    background: rgba(255,255,255,0.2);
+}
+
 .row {
     display: flex;
 }
@@ -47,15 +94,15 @@
         font-size: 30px;
     }
 }
+
 @media screen and (max-width: 799px) {
-    .row {
-        display: block;
+    .tableRow {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
     }
-    .col {
-        text-align: center !important;
-        word-break: break-word;
-    }
-    .show_formulas {
-        display: none;
+    
+    .tableValue {
+        text-align: center;
     }
 }

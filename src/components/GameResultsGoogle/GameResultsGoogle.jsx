@@ -35,6 +35,19 @@ function GameResultsGoogle({ classNames, getParams, utils, realPos, guessPos, ma
                         markers.placePin(map, arrToLLObj(guessPos), guessPin, geoUrl(guessPos));
                         markers.placePin(map, arrToLLObj(realPos.current), realPin, geoUrl(realPos.current));
 
+                        // Draw red line between guess and real position
+                        const linePath = new window.google.maps.Polyline({
+                            path: [
+                                arrToLLObj(guessPos),
+                                arrToLLObj(realPos.current)
+                            ],
+                            geodesic: false,
+                            strokeColor: '#FF0000',
+                            strokeOpacity: 1.0,
+                            strokeWeight: 3
+                        });
+                        linePath.setMap(map);
+
                         let mapLoaded = false;
 
                         map.addListener('tilesloaded', () => {
