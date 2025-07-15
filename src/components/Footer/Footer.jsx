@@ -26,33 +26,6 @@ function Footer() {
                     </div>
                     <div className={cls.section}>
                         <h3 className={cls.section_header}>
-                            Contact
-                        </h3>
-                        <div className={cls.section_text}>
-                            <ul className={cls.list}>
-                                <li>
-                                    E-mail:{' '}
-                                    <a
-                                        href="mailto:anopeng000@gmail.com"
-                                        target="_blank"
-                                        rel="noreferrer"
-                                    >
-                                        anopeng000@gmail.com
-                                    </a>
-                                </li>
-                                <li>
-                                    Telegram:{' '}
-                                    <a href="https://t.me/vl_pnk" target="_blank" rel="noreferrer">@vl_pnk</a>
-                                </li>
-                                <li>
-                                    Discord:{' '}
-                                    <a href="https://discordapp.com/users/911550482709905418" target="_blank" rel="noreferrer">AnonymousPenguin#5362</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div className={cls.section}>
-                        <h3 className={cls.section_header}>
                             Built with...
                         </h3>
                         <div className={cls.section_text}>
@@ -61,7 +34,6 @@ function Footer() {
                                 <li>JavaScript</li>
                                 <li>ReactJS</li>
                                 <li>Google Maps API</li>
-                                <li>Street View API</li>
                                 <li>Turf</li>
                             </ul>
                         </div>
@@ -71,16 +43,16 @@ function Footer() {
             <div className={cls.part_bottom}>
                 <div className={spbw('container', cls.container)}>
                     <p>
-                        &copy; 2023 Anopeng
+                        &copy; 2025 JakeFleischer
                     </p>
                     <p>
                         My GitHub:{' '}
                         <a
-                            href="https://github.com/anonymouspenguin000"
+                            href="https://github.com/RikiSpanish"
                             target="_blank"
                             rel="noreferrer"
                         >
-                            AnonymousPenguin000
+                            RikiSpanish
                         </a>
                     </p>
                 </div>

@@ -54,12 +54,12 @@ function EnterGame({ className }) {
                     <Dropdown 
                         className={cls.zoom_dropdown} 
                         optionList={[
-                            ['20', '0 (Furthest)'],
-                            ['18', '10'],
-                            ['16', '20'],
-                            ['14', '30'],
-                            ['12', '50'],
-                            ['10', '100 (Closest)']
+                            ['30', '0 (Furthest)'],
+                            ['20', '10'],
+                            ['15', '20'],
+                            ['10', '30'],
+                            ['5', '50'],
+                            ['0', '100 (Closest)']
                         ]} 
                         name="zoom" 
                         defaultValue="15"
