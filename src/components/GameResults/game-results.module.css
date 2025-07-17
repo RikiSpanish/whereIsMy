@@ -1,17 +1,20 @@
 .results {
     padding: 40px 0;
 }
+
 .map {
     width: 70%;
     height: 500px;
     margin: 0 auto;
 }
+
 .main {
-    background-color:rgba(255,255,255,.05);
-    border-radius:10px;
+    background-color: var(--ctsp-bg);
+    border-radius: 10px;
     margin: 40px;
     padding: 40px;
     font-size: 40px;
+    color: var(--text-color);
 }
 
 .resultsTable {
@@ -27,7 +30,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 15px 0;
-    border-bottom: 2px solid rgba(255,255,255,0.1);
+    border-bottom: 2px solid var(--ctsp-bg);
 }
 
 .tableRow:last-child {
@@ -36,57 +39,70 @@
 
 .tableLabel {
     font-weight: bold;
-    color: rgba(255,255,255,0.8);
+    color: var(--text-color);
+    opacity: 0.8;
 }
 
 .tableValue {
     font-family: monospace;
     font-weight: bold;
-    color: #fff;
+    color: var(--text-color);
     text-align: right;
 }
 
 .unitToggle {
-    background: rgba(255,255,255,0.1);
-    border: 1px solid rgba(255,255,255,0.3);
-    color: #fff;
+    background: var(--ctsp-bg);
+    border: 1px solid var(--text-color);
+    color: var(--text-color);
     padding: 8px 16px;
     border-radius: 5px;
     cursor: pointer;
     font-size: 0.6em;
     transition: background-color 0.3s ease;
+    opacity: 0.7;
 }
 
 .unitToggle:hover {
-    background: rgba(255,255,255,0.2);
+    background: var(--ctsp-bg);
+    opacity: 1;
+    filter: brightness(1.2);
 }
 
 .row {
     display: flex;
 }
+
 .row > * {
     flex: 1;
 }
+
 .col {
     padding: 10px;
+    color: var(--text-color);
 }
+
 .col:first-child {
     text-align: right;
 }
+
 .col:last-child {
     text-align: left;
 }
+
 .col:only-child {
     text-align: center;
 }
+
 .val {
     font-family: monospace;
     font-size: 0.9em;
+    color: var(--text-color);
 }
 
 .home_link {
     font-size: 35px;
     text-align: center;
+    color: var(--text-color);
 }
 
 @media screen and (max-width: 1219px) {

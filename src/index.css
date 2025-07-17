@@ -8,10 +8,26 @@
     --size-mul: 1;
     --mm-wid: 0;
     --mm-hgt: 0;
+}
 
+/* Dark theme (default) */
+:root,
+:root[data-theme="dark"] {
     --cprimary: #000020;
     --ctsp-bg: rgba(255, 255, 255, 0.05);
     --gprimary: linear-gradient(#000011, #00002f);
+    --text-color: #999;
+    --text-selection: #66c;
+}
+
+/* Light theme */
+:root[data-theme="light"] {
+    --cprimary: #f0f0f0;
+    --ctsp-bg: rgba(0, 0, 0, 0.05);
+    --gprimary: linear-gradient(#ffffff, #e0e0e0);
+    --text-color: #333;
+    --text-selection: #0066cc;
+    --white-color-transform: brightness(0.2);
 }
 
 body {
@@ -19,7 +35,7 @@ body {
     font-family: Abel, "Trebuchet MS", Calibri, Arial, sans-serif;
     min-height: 100vh;
     background: var(--gprimary) no-repeat 100% 100%;
-    color: #999;
+    color: var(--text-color);
     font-size: 25px;
     cursor: default;
 }
@@ -29,7 +45,7 @@ body {
 }
 ::selection {
     background: transparent;
-    color: #66c;
+    color: var(--text-selection);
 }
 
 code {

@@ -12,11 +12,33 @@
     align-items: center;
     justify-content: space-between;
     height: var(--header-height);
+    position: relative;
+}
+
+.leftSection {
+    flex: 1;
+    display: flex;
+    align-items: center;
+}
+
+.centerSection {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.rightSection {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
 }
 
 .logo {
     font-size: 1.5em;
     height: 1em;
+    cursor: pointer;
 }
 
 .logo:before {
@@ -37,23 +59,125 @@
         filter: none;
     }
 }
+
+.themeToggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.toggleText {
+    font-size: 0.9em;
+    white-space: nowrap;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
 @media screen and (max-width: 519px) {
     .container {
+        flex-direction: column;
+        height: auto;
+        padding: 10px 0;
+    }
+    
+    .leftSection,
+    .centerSection,
+    .rightSection {
+        flex: none;
+        width: 100%;
+    }
+    
+    .centerSection {
+        order: 1;
+        margin-bottom: 10px;
+    }
+    
+    .rightSection {
+        order: 2;
+        justify-content: center;
+        margin-bottom: 10px;
+    }
+    
+    .leftSection {
+        order: 3;
         justify-content: center;
     }
-    .label {
-        position: absolute;
-        right: 15px;
-        top: calc(var(--header-height) + 20px);
-        text-shadow: 0 0 2px #fff;
+    
+    .toggleText {
+        font-size: 0.8em;
     }
 }
+
 @media screen and (max-width: 379px) {
     .container {
         width: 100% !important;
     }
+    
     .logo {
         transform: scale(0.8);
         white-space: nowrap;
+    }
+    
+    .themeToggle {
+        gap: 8px;
+    }
+    
+    .switch {
+        width: 50px;
+        height: 28px;
+    }
+    
+    .slider:before {
+        height: 22px;
+        width: 22px;
+        left: 3px;
+        bottom: 3px;
+    }
+    
+    input:checked + .slider:before {
+        transform: translateX(22px);
     }
 }
